@@ -1,0 +1,185 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    int CPF;
+    char nome[30];
+    int DuracaoHospedagem;
+    int pessoas;
+} Checkin;
+
+Checkin checkin[50];
+int numCheckin = 0;
+
+typedef struct {
+    char servicoQuarto[50];
+} Servico;
+
+Servico servico[50];
+int numServico = 0;
+
+typedef struct {
+    char pedido[100];
+} Pedido;
+
+Pedido pedidos[50];
+int numPedido = 0;
+
+typedef struct {
+    int ocupado;
+} Quarto;
+
+Quarto quartos[50];
+int numQuarto = 0;
+
+void realizarCheckin();
+void solicitarServico();
+void fazerPedido();
+void exibirDados();
+void mostrarQuartosOcupados();
+void finalizarfuncao();
+
+int main() {
+    int opcao;
+
+    do {
+        printf("---- HOTEL PIFFER ----\n");
+        printf("1 - Check in\n");
+        printf("2 - Serviço de Quarto\n");
+        printf("3 - Fazer pedido\n");
+        printf("4 - Exibir Dados\n");
+        printf("5 - Mostrar Quartos Ocupados\n");
+        printf("0 - Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+        getchar();
+
+        switch (opcao) {
+            case 1:
+                realizarCheckin();
+                break;
+            case 2:
+                solicitarServico();
+                break;
+            case 3:
+                fazerPedido();
+                break;
+            case 4:
+                exibirDados();
+                break;
+            case 5:
+                mostrarQuartosOcupados();
+                break;
+            case 0:
+                printf("Saindo...\n");
+                break;
+            default:
+                printf("Opção inválida! Tente novamente.\n");
+                break;
+        }
+
+    } while (opcao != 0);
+
+    return 0;
+}
+
+void realizarCheckin() {
+    system("clear");
+    printf("---- Check in ----\n");
+
+    printf("Informe seu nome: ");
+    scanf("%s", checkin[numCheckin].nome);
+
+    printf("Informe seu CPF: ");
+    scanf("%d", &checkin[numCheckin].CPF);
+
+    printf("Duração da hospedagem: ");
+    scanf("%d", &checkin[numCheckin].DuracaoHospedagem);
+
+    printf("Informe quantas pessoas são: ");
+    scanf("%d", &checkin[numCheckin].pessoas);
+
+    quartos[numQuarto].ocupado = 1;
+    printf("Check-in realizado no quarto número: %d\n", numQuarto);
+
+    numCheckin++;
+    numQuarto++;
+
+    finalizarfuncao();
+}
+
+void solicitarServico() {
+    char resposta;
+    system("clear");
+    printf("---- Serviço de Quarto ----\n");
+
+    printf("Deseja solicitar serviço de quarto? (s/n): ");
+    scanf(" %c", &resposta);
+    getchar();
+
+    if (resposta == 's' || resposta == 'S') {
+        printf("Descreva o serviço: ");
+        scanf("%s", servico[numServico].servicoQuarto);
+        printf("Serviço solicitado!\n");
+        numServico++;
+    } else {
+        printf("Nenhum serviço solicitado.\n");
+    }
+
+    finalizarfuncao();
+}
+
+void fazerPedido() {
+    system("clear");
+    printf("---- Fazer pedido ----\n");
+    printf("Informe seu pedido: ");
+    scanf("%s", pedidos[numPedido].pedido);
+
+    printf("Pedido feito com sucesso!\n");
+    numPedido++;
+    finalizarfuncao();
+}
+
+void exibirDados() {
+    system("clear");
+    printf("---- Exibir Dados ----\n");
+
+    if (numCheckin == 0) {
+        printf("Nenhum check-in realizado ainda.\n");
+    } else {
+        int ultimo = numCheckin - 1;
+        printf("Nome: %s\n", checkin[ultimo].nome);
+        printf("CPF: %d\n", checkin[ultimo].CPF);
+        printf("Duração: %d dias\n", checkin[ultimo].DuracaoHospedagem);
+        printf("Número de pessoas: %d\n", checkin[ultimo].pessoas);
+
+        if (numServico > 0)
+            printf("Último serviço de quarto: %s\n", servico[numServico - 1].servicoQuarto);
+
+        if (numPedido > 0)
+            printf("Último pedido: %s\n", pedidos[numPedido - 1].pedido);
+    }
+
+    finalizarfuncao();
+}
+
+void mostrarQuartosOcupados() {
+    system("clear");
+    printf("---- Quartos Ocupados ----\n");
+    for (int i = 0; i < numQuarto; i++) {
+        if (quartos[i].ocupado) {
+            printf("Quarto %d - Ocupado (Cliente: %s)\n", i, checkin[i].nome);
+        } else {
+            printf("Quarto %d - Livre\n", i);
+        }
+    }
+    finalizarfuncao();
+}
+
+void finalizarfuncao() {
+    printf("\n------------------------------\n");
+    printf("Pressione Enter para continuar...");
+    getchar();
+    system("clear");
+}
